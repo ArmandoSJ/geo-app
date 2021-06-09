@@ -1,0 +1,2 @@
+rootProject.name = "Geolocalizaciónapp"
+include ':app'
