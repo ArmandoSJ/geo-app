@@ -2,21 +2,22 @@ package com.developer.jauregui.backend.database
 
 import androidx.room.*
 import com.developer.jauregui.backend.entities.RutaEntity
+import com.developer.jauregui.backend.entities.UserEntity
 
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM user_table")
-    fun getAllStores() : MutableList<RutaEntity>
+    @Query("Select * From user_table")
+    fun getAllUser() : MutableList<UserEntity>
 
-    @Query("SELECT * FROM user_table where vUserID = :id")
-    fun getStoreById(id: String): RutaEntity
+    @Query("Select * From user_table where vUserID = :id")
+    fun getUserById(id: String): UserEntity
 
     @Insert
-    fun addStore(rutaEntity: RutaEntity): Long
+    fun addUser(userEntity: UserEntity): Long
 
     @Update
-    fun updateStore(rutaEntity: RutaEntity)
+    fun updateUser(userEntity: UserEntity)
 
     @Delete
-    fun deleteStore(rutaEntity: RutaEntity)
+    fun deleteUser(userEntity: UserEntity)
 }

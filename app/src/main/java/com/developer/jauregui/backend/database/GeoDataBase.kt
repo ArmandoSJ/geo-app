@@ -4,27 +4,28 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.developer.jauregui.backend.entities.RutaEntity
 import com.developer.jauregui.backend.entities.UserEntity
+import com.developer.jauregui.utils.DateConverter
 
 
 @Database(entities = arrayOf(RutaEntity::class, UserEntity::class), version = 1)
+@TypeConverters(DateConverter::class)
 abstract class GeoDataBase : RoomDatabase() {
     companion object {
-        private  var Instance: GeoDataBase?= null
+        private  lateinit var dataBase: GeoDataBase
 
-        fun getInstance(context: Context): GeoDataBase?{
-            if (Instance == null){
-
+        fun getInstance(context: Context): GeoDataBase{
                 synchronized(GeoDataBase::class){
-                    Instance = Room.databaseBuilder(
+                    dataBase = Room.databaseBuilder(
                         context.applicationContext,
                         GeoDataBase::class.java,
                         "geodatabase.db"
                     ).build()
                 }
-            }
-            return Instance
+
+            return dataBase
         }
     }
 

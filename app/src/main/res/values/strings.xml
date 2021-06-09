@@ -2,4 +2,8 @@
     <string name="app_name">Geolocalizaciónapp</string>
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAthUE7nIvArDecpaD40yA08iry44tYZco</string>
+    <string name="descripcion">Descripcion</string>
+    <string name="user">User</string>
+    <string name="time">time</string>
+
 </resources>
