@@ -10,7 +10,7 @@ import org.jetbrains.anko.uiThread
 
 class MainInteractor : Application()  {
 
-    fun getStores(callback: (MutableList<RutaEntity>) -> Unit){
+    fun getRutas(callback: (MutableList<RutaEntity>) -> Unit){
         doAsync {
             val lstRuta = GeoDataBase.getInstance(this@MainInteractor).rutaDao().getAllRutas()
             uiThread {
@@ -19,7 +19,7 @@ class MainInteractor : Application()  {
         }
     }
 
-    fun deleteStore(rutaEntity: RutaEntity, callback: (RutaEntity) -> Unit){
+    fun deleteRutas(rutaEntity: RutaEntity, callback: (RutaEntity) -> Unit){
         doAsync {
             GeoDataBase.getInstance(this@MainInteractor).rutaDao().deleteRuta(rutaEntity)
             uiThread {
@@ -28,7 +28,7 @@ class MainInteractor : Application()  {
         }
     }
 
-    fun updateStore(rutaEntity: RutaEntity, callback: (RutaEntity) -> Unit){
+    fun updateRutas(rutaEntity: RutaEntity, callback: (RutaEntity) -> Unit){
         doAsync {
             GeoDataBase.getInstance(this@MainInteractor).rutaDao().deleteRuta(rutaEntity)
             uiThread {

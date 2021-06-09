@@ -39,26 +39,26 @@ class RutasAdapter(private var rutas: MutableList<RutaEntity>,
 
     override fun getItemCount(): Int = rutas.size
 
-    fun setStores(stores: List<RutaEntity>) {
-        this.rutas = stores as MutableList<RutaEntity>
+    fun setStores(rutas: List<RutaEntity>) {
+        this.rutas = rutas as MutableList<RutaEntity>
         notifyDataSetChanged()
     }
 
-    fun add(storeEntity: RutaEntity) {
-        if (storeEntity.idLocation != 0L) {
-            if (!rutas.contains(storeEntity)) {
-                rutas.add(storeEntity)
+    fun add(rutaEntity: RutaEntity) {
+        if (rutaEntity.idLocation != 0L) {
+            if (!rutas.contains(rutaEntity)) {
+                rutas.add(rutaEntity)
                 notifyItemInserted(rutas.size-1)
             } else {
-                update(storeEntity)
+                update(rutaEntity)
             }
         }
     }
 
-    private fun update(storeEntity: RutaEntity) {
-        val index = rutas.indexOf(storeEntity)
+    private fun update(rutaEntity: RutaEntity) {
+        val index = rutas.indexOf(rutaEntity)
         if (index != -1){
-            rutas.set(index, storeEntity)
+            rutas.set(index, rutaEntity)
             notifyItemChanged(index)
         }
     }
@@ -66,11 +66,11 @@ class RutasAdapter(private var rutas: MutableList<RutaEntity>,
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val binding = RutasViewListBinding.bind(view)
 
-        fun setListener(storeEntity: RutaEntity){
+        fun setListener(rutaEntity: RutaEntity){
             with(binding.root) {
-                setOnClickListener { listener.onClick(storeEntity) }
+                setOnClickListener { listener.onClick(rutaEntity) }
                 setOnLongClickListener {
-                    listener.onDeleteStore(storeEntity)
+                    listener.onDeleteRuta(rutaEntity)
                     true
                 }
             }

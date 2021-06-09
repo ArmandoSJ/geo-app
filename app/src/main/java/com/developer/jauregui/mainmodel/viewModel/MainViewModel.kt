@@ -8,42 +8,42 @@ import com.developer.jauregui.backend.entities.RutaEntity
 
 
 class MainViewModel: ViewModel() {
-    private var storeList: MutableList<RutaEntity>
+    private var rutaList: MutableList<RutaEntity>
     private var interactor: MainInteractor
 
     init {
-        storeList = mutableListOf()
+        rutaList = mutableListOf()
         interactor = MainInteractor()
     }
 
-    private val stores: MutableLiveData<List<RutaEntity>> by lazy {
+    private val rutas: MutableLiveData<List<RutaEntity>> by lazy {
         MutableLiveData<List<RutaEntity>>().also {
             loadStores()
         }
     }
 
-    fun getStores(): LiveData<List<RutaEntity>>{
-        return stores
+    fun getRutas(): LiveData<List<RutaEntity>>{
+        return rutas
     }
 
     private fun loadStores(){
         interactor.getStores {
-            stores.value = it
-            storeList = it
+            rutas.value = it
+            rutaList = it
         }
     }
 
     fun deleteStore(storeEntity: RutaEntity){
         interactor.deleteStore(storeEntity, {
-            val index = storeList.indexOf(storeEntity)
+            val index = rutaList.indexOf(storeEntity)
             if (index != -1){
-                storeList.removeAt(index)
-                stores.value = storeList
+                rutaList.removeAt(index)
+                rutas.value = rutaList
             }
         })
     }
 
-    fun updateStore(storeEntity: RutaEntity){
+    fun updateRutas(rutasEntity: RutaEntity){
 
     }
 }

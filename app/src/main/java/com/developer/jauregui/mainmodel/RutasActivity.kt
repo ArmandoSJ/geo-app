@@ -37,7 +37,7 @@ class RutasActivity : AppCompatActivity(), OnClickListener {
 
     private fun setupViewModel() {
         rutaMainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        rutaMainViewModel.getStores().observe(this, { stores->
+        rutaMainViewModel.getRutas().observe(this, { stores->
             rutaAdapter.setStores(stores)
         })
 
@@ -45,100 +45,49 @@ class RutasActivity : AppCompatActivity(), OnClickListener {
         rutaEditStoreViewModel.getShowFab().observe(this, { isVisible ->
             if (isVisible) rutasViewBinding.fab.show() else rutasViewBinding.fab.hide()
         })
-        rutaEditStoreViewModel.getStoreSelected().observe(this, { storeEntity ->
+        rutaEditStoreViewModel.getRutaSelected().observe(this, { storeEntity ->
             rutaAdapter.add(storeEntity)
         })
     }
 
     private fun launchEditFragment(rutaEntity: RutaEntity = RutaEntity()) {
         rutaEditStoreViewModel.setShowFab(false)
-        rutaEditStoreViewModel.setStoreSelected(rutaEntity)
+        rutaEditStoreViewModel.setRutaSelected(rutaEntity)
 
         val fragment = EditRutaViewModel()
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
 
-        //fragmentTransaction.add(R.id.containerMain, fragment)
+
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
 
     private fun setupRecylcerView() {
         rutaAdapter = RutasAdapter(mutableListOf(), this)
-        //rutaGridLayout = GridLayoutManager(this, resources.getInteger(R.integer.main_columns))
 
         rutasViewBinding.recyclerView.apply {
             setHasFixedSize(true)
-            //layoutManager = mGridLayout
             adapter = rutaAdapter
         }
     }
 
-    /*
-    * OnClickListener
-    * */
-    override fun onClick(storeEntity: RutaEntity) {
-        //launchEditFragment(storeEntity)
+
+    override fun onClick(rutaEntity: RutaEntity) {
         print("Entro")
     }
 
 
 
-    override fun onDeleteStore(rutaEntity: RutaEntity) {
-        /*
-        val items = resources.getStringArray(R.array.array_options_item)
-
-        MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.dialog_options_title)
-            .setItems(items, { dialogInterface, i ->
-                when(i){
-                    0 -> confirmDelete(rutaEntity)
-
-                    1 -> dial(rutaEntity.phone)
-
-                    2 -> goToWebsite(rutaEntity.website)
-                }
-            })
-            .show()
-            */
+    override fun onDeleteRuta(rutaEntity: RutaEntity) {
     }
 
-    private fun confirmDelete(storeEntity: RutaEntity){
-        /*
-        MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.dialog_delete_title)
-            .setPositiveButton(R.string.dialog_delete_confirm, { dialogInterface, i ->
-                mMainViewModel.deleteStore(storeEntity)
-            })
-            .setNegativeButton(R.string.dialog_delete_cancel, null)
-            .show()
-        */
+    private fun confirmDelete(rutaEntity: RutaEntity){
+
     }
 
-    private fun dial(phone: String){
-        val callIntent = Intent().apply {
-            action = Intent.ACTION_DIAL
-            data = Uri.parse("tel:$phone")
-        }
 
-        startIntent(callIntent)
-    }
 
-    private fun goToWebsite(website: String){
-        /*
-        if (website.isEmpty()){
-            Toast.makeText(this, R.string.main_error_no_website, Toast.LENGTH_LONG).show()
-        } else {
-            val websiteIntent = Intent().apply {
-                action = Intent.ACTION_VIEW
-                data = Uri.parse(website)
-            }
-
-            startIntent(websiteIntent)
-        }
-
-       */
-    }
 
     private fun startIntent(intent: Intent){
         if (intent.resolveActivity(packageManager) != null)

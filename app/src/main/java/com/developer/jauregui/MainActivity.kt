@@ -26,12 +26,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_main)
         mainViewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainViewBinding.root)
 
         createMapFragment()
-        //Intent(this, RutasActivity::class.java)
         mainViewBinding.fab.setOnClickListener{
             startIntent(
                 Intent(this, RutasActivity::class.java)
@@ -67,40 +65,4 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         Manifest.permission.ACCESS_COARSE_LOCATION
     ) != PackageManager.PERMISSION_GRANTED
 
- /*   private fun enableMyLocation() {
-        if (!::mapView.isInitialized) return
-        if (isPermissionsGranted()) {
-            mapView.isMyLocationEnabled = true
-        } else {
-            requestLocationPermission()
-        }
-    }
-
-
-    private fun requestLocationPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)) {
-            Toast.makeText(this, "Ve a ajustes y acepta los permisos", Toast.LENGTH_SHORT).show()
-        } else {
-            ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                REQUEST_CODE_LOCATION)
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when(requestCode){
-            REQUEST_CODE_LOCATION -> if(grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                mapView.isMyLocationEnabled = true
-            }else{
-                Toast.makeText(this, "Para activar la localización ve a ajustes y acepta los permisos", Toast.LENGTH_SHORT).show()
-            }
-            else -> {}
-        }
-    }
-    */
 }

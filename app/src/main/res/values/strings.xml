@@ -4,5 +4,9 @@
     <string name="user">User</string>
     <string name="time">time</string>
     <string name="agregar_dirreccion">agregar dirreccion</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="longitud">longitud</string>
+    <string name="latitud">Latitud</string>
 
 </resources>

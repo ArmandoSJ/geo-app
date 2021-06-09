@@ -7,7 +7,7 @@ import com.cursosant.android.stores.editModule.model.EditInteractor
 import com.developer.jauregui.backend.entities.RutaEntity
 
 class EditRutaViewModel :ViewModel() {
-    private val storeSelected = MutableLiveData<RutaEntity>()
+    private val rutaSelected = MutableLiveData<RutaEntity>()
     private val showFab = MutableLiveData<Boolean>()
     private val result = MutableLiveData<Any>()
 
@@ -17,12 +17,12 @@ class EditRutaViewModel :ViewModel() {
         interactor = EditInteractor()
     }
 
-    fun setStoreSelected(storeEntity: RutaEntity){
-        storeSelected.value = storeEntity
+    fun setRutaSelected(rutaEntity: RutaEntity){
+        rutaSelected.value = rutaEntity
     }
 
-    fun getStoreSelected(): LiveData<RutaEntity>{
-        return storeSelected
+    fun getRutaSelected(): LiveData<RutaEntity>{
+        return rutaSelected
     }
 
     fun setShowFab(isVisible: Boolean){
@@ -41,15 +41,15 @@ class EditRutaViewModel :ViewModel() {
         return result
     }
 
-    fun saveStore(rutaEntity: RutaEntity){
-        interactor.saveStore(rutaEntity, { newId ->
+    fun saveRuta(rutaEntity: RutaEntity){
+        interactor.saveRuta(rutaEntity, { newId ->
             result.value = newId
         })
     }
 
-    fun updateStore(rutaEntity: RutaEntity){
-        interactor.updateStore(rutaEntity, { storeUpdated ->
-            result.value = storeUpdated
+    fun updateRuta(rutaEntity: RutaEntity){
+        interactor.updateRuta(rutaEntity, { rutaUpdated ->
+            result.value = rutaUpdated
         })
     }
 }

@@ -10,7 +10,7 @@ import org.jetbrains.anko.uiThread
 
 class EditInteractor : Application(){
 
-    fun saveStore(rutaEntity: RutaEntity, callback: (Long) -> Unit){
+    fun saveRuta(rutaEntity: RutaEntity, callback: (Long) -> Unit){
         doAsync {
             val rutaID = GeoDataBase.getInstance(this@EditInteractor).rutaDao().addRuta(rutaEntity)
             GeoDataBase.getInstance(this@EditInteractor).rutaDao().deleteRuta(rutaEntity)
@@ -20,7 +20,7 @@ class EditInteractor : Application(){
         }
     }
 
-    fun updateStore(rutaEntity: RutaEntity, callback: (RutaEntity) -> Unit){
+    fun updateRuta(rutaEntity: RutaEntity, callback: (RutaEntity) -> Unit){
         doAsync {
             GeoDataBase.getInstance(this@EditInteractor).rutaDao().updateRuta(rutaEntity)
             uiThread {
