@@ -1,12 +1,15 @@
 package com.developer.jauregui
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.developer.jauregui.R
+import com.developer.jauregui.databinding.ActivityMainBinding
+import com.developer.jauregui.mainmodel.RutasActivity
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -19,11 +22,30 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mapView: GoogleMap
 
+    private lateinit var mainViewBinding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        //setContentView(R.layout.activity_main)
+        mainViewBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mainViewBinding.root)
 
         createMapFragment()
+        //Intent(this, RutasActivity::class.java)
+        mainViewBinding.fab.setOnClickListener{
+            startIntent(
+                Intent(this, RutasActivity::class.java)
+            )
+        }
+
+    }
+
+    private fun startIntent(intent: Intent){
+        if (intent.resolveActivity(packageManager) != null)
+            startActivity(intent)
+        else
+            Toast.makeText(this, "error", Toast.LENGTH_LONG).show()
+
     }
 
     private fun createMapFragment() {
