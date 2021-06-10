@@ -27,14 +27,14 @@ class MainViewModel: ViewModel() {
     }
 
     private fun loadStores(){
-        interactor.getStores {
+        interactor.getRutas {
             rutas.value = it
             rutaList = it
         }
     }
 
     fun deleteStore(storeEntity: RutaEntity){
-        interactor.deleteStore(storeEntity, {
+        interactor.deleteRutas(storeEntity, {
             val index = rutaList.indexOf(storeEntity)
             if (index != -1){
                 rutaList.removeAt(index)
