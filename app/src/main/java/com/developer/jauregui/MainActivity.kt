@@ -4,8 +4,11 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -15,7 +18,8 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
 const val TITLE = "GEO MAP"
@@ -29,8 +33,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
 
     private lateinit var mainViewBinding: ActivityMainBinding
 
-    var currentLocation : Location? = null
-    //var fusedLocationProviderClient: FusedLocationProviderClient? = null
+    // inside a basic activity
+    private var locationManager : LocationManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,27 +67,40 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
         mapFragment.getMapAsync(this)
     }
 
+    private var markers :
+
+
     override fun onMapReady(googleMap: GoogleMap) {
         mapView = googleMap
-        val boundsBuilder = LatLngBounds.Builder()
+
+        // Create persistent LocationManager reference
+        locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
+
         mapView.setOnMapLongClickListener { latLng ->
-            mapView.clear();
-            // Animating to the touched position
+
             mapView.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
             mapView.addMarker(MarkerOptions().position(latLng)
                 .title("Marker").snippet("asd"))
         }
-
-
-
-        /*val sydney = LatLng(-34.0, 351.0)
-        mapView.addMarker(MarkerOptions().position(sydney).title("asd"))
-        mapView.moveCamera(CameraUpdateFactory.newLatLng(sydney))*/
-        //boundsBuilder.include()
-        //mapView.setOnMyLocationButtonClickListener(this)
         enableLocation()
     }
+
+
+
+    //define the listener
+    private val locationListener: LocationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            val zoomLevel = 17f
+            val positionView = LatLng(location.latitude, location.longitude)
+            // latLng contains the coordinates where the marker is added
+            mapView.moveCamera(CameraUpdateFactory.newLatLngZoom(positionView, zoomLevel))
+        }
+        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+        override fun onProviderEnabled(provider: String) {}
+        override fun onProviderDisabled(provider: String) {}
+    }
+
 
 
     private fun isLocationPermissionGranted() = ContextCompat.checkSelfPermission(
@@ -95,6 +112,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
         if (!::mapView.isInitialized) return
         if (isLocationPermissionGranted()) {
             mapView.isMyLocationEnabled = true
+            try {
+                // Request location updates
+                locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
+            } catch(ex: SecurityException) {
+                ex.printStackTrace()
+                Log.d("no location", "location no found")
+            }
         } else {
             requestLocationPermission()
         }
@@ -140,6 +164,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
     }
 
     override fun onMyLocationButtonClick(): Boolean {
-        return false
+        return true
     }
 }
