@@ -1,6 +1,7 @@
 package com.developer.jauregui
 
 import android.Manifest
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -9,9 +10,14 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.cursosant.android.stores.editModule.viewModel.EditRutaViewModel
+import com.developer.jauregui.backend.entities.RutaEntity
 import com.developer.jauregui.databinding.ActivityMainBinding
 import com.developer.jauregui.mainmodel.RutasActivity
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -20,7 +26,10 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
+import java.util.*
 
 const val TITLE = "GEO MAP"
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener {
@@ -32,7 +41,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
     private lateinit var mapView: GoogleMap
 
     private lateinit var mainViewBinding: ActivityMainBinding
-
+    private lateinit var mRutaEntity: RutaEntity
+    private lateinit var mSaveRutaViewModel: EditRutaViewModel
     // inside a basic activity
     private var locationManager : LocationManager? = null
 
@@ -48,8 +58,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
                 Intent(this, RutasActivity::class.java)
             )
         }
+    }
 
-
+    private fun setupViewModel() {
 
     }
 
@@ -67,25 +78,58 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMyLoca
         mapFragment.getMapAsync(this)
     }
 
-    private var markers :
+    private var markers : MutableList<Marker> = mutableListOf()
 
 
     override fun onMapReady(googleMap: GoogleMap) {
         mapView = googleMap
-
+        //elimina los marcadores del map
+        mapView.setOnInfoWindowClickListener { marketToDelete ->
+            markers.remove(marketToDelete)
+            marketToDelete.remove()
+        }
         // Create persistent LocationManager reference
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
 
         mapView.setOnMapLongClickListener { latLng ->
 
-            mapView.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-
-            mapView.addMarker(MarkerOptions().position(latLng)
-                .title("Marker").snippet("asd"))
+            showAlertDialog(latLng)
         }
+
         enableLocation()
     }
 
+    private fun showAlertDialog(latLng: LatLng) {
+        val placeFormView = LayoutInflater.from(this).inflate(R.layout.create_dialog,null)
+        val dialog = AlertDialog.Builder(this).setTitle("Crear direccion")
+            .setView(placeFormView)
+            .setNegativeButton("Cancel",null)
+            .setPositiveButton("Agregar", null)
+            .show()
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener{
+            val vDireccion = placeFormView.findViewById<EditText>(R.id.edtDirrecion).text.toString()
+            val vFecha = placeFormView.findViewById<EditText>(R.id.edtFecha).text.toString()
+            val marker = mapView.addMarker(MarkerOptions().position(latLng)
+                .title(vDireccion).snippet(vFecha))
+
+
+                with(mRutaEntity) {
+                    vDescription = vDireccion
+                    vLong = latLng.longitude.toString()
+                    vLat = latLng.latitude.toString()
+                    vUserID = "asalazarj"
+                    //vFechaEntre = vFecha
+                }
+            mSaveRutaViewModel.saveRuta(mRutaEntity)
+
+
+
+            markers.add(marker)
+
+            dialog.dismiss()
+        }
+
+    }
 
 
     //define the listener

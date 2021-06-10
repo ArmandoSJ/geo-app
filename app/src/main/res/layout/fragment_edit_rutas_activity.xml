@@ -14,14 +14,47 @@
         android:padding="@dimen/common_padding_default">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtDireccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/direccion"
+            app:endIconMode="clear_text"
+            app:counterMaxLength="100"
+            app:counterEnabled="true"
+            app:startIconDrawable="@drawable/ic_baseline_edit_location_24"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="116"
+                android:inputType="textCapWords"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/fecha_de_atencion"
+            app:endIconMode="clear_text"
+            app:counterEnabled="false"
+            app:startIconDrawable="@drawable/ic_baseline_edit_location_24"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etFecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="116"
+                android:inputType="textCapWords"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txtLat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/latitud"
-            app:helperText="Ingrese la latitud"
             app:endIconMode="clear_text"
-            app:counterMaxLength="10000"
-            app:counterEnabled="true"
+            app:counterEnabled="false"
             app:startIconDrawable="@drawable/ic_baseline_edit_location_24"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
@@ -36,18 +69,17 @@
             android:id="@+id/txtLong"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/common_padding_default"
             android:hint="@string/longitud"
-            app:helperText="Ingrese la Longitud"
             app:endIconMode="clear_text"
             app:startIconDrawable="@drawable/ic_baseline_edit_location_24"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="123"
-                android:inputType="phone"/>
+                android:inputType="phone"
+                android:maxLength="123" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
