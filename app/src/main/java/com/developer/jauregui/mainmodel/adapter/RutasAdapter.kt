@@ -39,7 +39,7 @@ class RutasAdapter(private var rutas: MutableList<RutaEntity>,
 
     override fun getItemCount(): Int = rutas.size
 
-    fun setStores(rutas: List<RutaEntity>) {
+    fun setRutas(rutas: List<RutaEntity>) {
         this.rutas = rutas as MutableList<RutaEntity>
         notifyDataSetChanged()
     }

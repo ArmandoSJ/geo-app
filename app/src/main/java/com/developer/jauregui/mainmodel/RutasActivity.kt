@@ -1,7 +1,6 @@
 package com.developer.jauregui.mainmodel
 
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -10,7 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.cursosant.android.stores.editModule.viewModel.EditRutaViewModel
 import com.cursosant.android.stores.mainModule.adapter.OnClickListener
 import com.cursosant.android.stores.mainModule.adapter.RutasAdapter
-import com.cursosant.android.stores.mainModule.viewModel.MainViewModel
+import com.cursosant.android.stores.mainModule.viewModel.RutaModel
 import com.developer.jauregui.backend.entities.RutaEntity
 import com.developer.jauregui.databinding.ActivityRutasBinding
 
@@ -21,7 +20,7 @@ class RutasActivity : AppCompatActivity(), OnClickListener {
     private lateinit var rutaGridLayout: GridLayoutManager
 
 
-    private lateinit var rutaMainViewModel: MainViewModel
+    private lateinit var rutaMainViewModel: RutaModel
     private lateinit var rutaEditStoreViewModel: EditRutaViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,17 +35,19 @@ class RutasActivity : AppCompatActivity(), OnClickListener {
     }
 
     private fun setupViewModel() {
-        rutaMainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        rutaMainViewModel.getRutas().observe(this, { stores->
-            rutaAdapter.setStores(stores)
+        rutaMainViewModel = ViewModelProvider(this).get(RutaModel::class.java)
+        rutaMainViewModel.getRutas().observe(this, { rutas->
+            rutaAdapter.setRutas(rutas)
         })
 
         rutaEditStoreViewModel = ViewModelProvider(this).get(EditRutaViewModel::class.java)
         rutaEditStoreViewModel.getShowFab().observe(this, { isVisible ->
             if (isVisible) rutasViewBinding.fab.show() else rutasViewBinding.fab.hide()
         })
-        rutaEditStoreViewModel.getRutaSelected().observe(this, { storeEntity ->
-            rutaAdapter.add(storeEntity)
+
+        //agregamos a nuestra base de datos una ruta.
+        rutaEditStoreViewModel.getRutaSelected().observe(this, { rutaEntity ->
+            rutaAdapter.add(rutaEntity)
         })
     }
 

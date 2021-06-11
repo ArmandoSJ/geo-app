@@ -7,7 +7,7 @@ import com.cursosant.android.stores.mainModule.model.MainInteractor
 import com.developer.jauregui.backend.entities.RutaEntity
 
 
-class MainViewModel: ViewModel() {
+class RutaModel: ViewModel() {
     private var rutaList: MutableList<RutaEntity>
     private var interactor: MainInteractor
 
@@ -18,7 +18,7 @@ class MainViewModel: ViewModel() {
 
     private val rutas: MutableLiveData<List<RutaEntity>> by lazy {
         MutableLiveData<List<RutaEntity>>().also {
-            loadStores()
+            loadRutas()
         }
     }
 
@@ -26,16 +26,16 @@ class MainViewModel: ViewModel() {
         return rutas
     }
 
-    private fun loadStores(){
+    private fun loadRutas(){
         interactor.getRutas {
             rutas.value = it
             rutaList = it
         }
     }
 
-    fun deleteStore(storeEntity: RutaEntity){
-        interactor.deleteRutas(storeEntity, {
-            val index = rutaList.indexOf(storeEntity)
+    fun deleteRutas(rutasEntity: RutaEntity){
+        interactor.deleteRutas(rutasEntity, {
+            val index = rutaList.indexOf(rutasEntity)
             if (index != -1){
                 rutaList.removeAt(index)
                 rutas.value = rutaList
